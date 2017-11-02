@@ -166,9 +166,27 @@ void EXTI0_1_IRQHandler()
 			period = (double)clock_cycles / (double)SystemCoreClock;
 			frequency = 1.0 / period;
 
-			/* Print calculated values to the console. */
-			trace_printf("Signal frequency: %d Hz\n", (uint)frequency);
-			trace_printf("Signal Period: %d ns\n", (uint)(period*1000000000));
+			/* Print calculated frequency to the console. */
+			if(frequency < 100){
+				trace_printf("Signal frequency: %d mHz\n", (uint)frequency*1000);
+			}
+			else if(frequency < 1000000){
+				trace_printf("Signal frequency: %d Hz\n", (uint)frequency);
+			}
+			else{
+			trace_printf("Signal frequency: %d KHz\n", (uint)frequency/1000);
+			}
+
+			/* Print calculated period to the console. */
+			if(period < 0.00001){
+				trace_printf("Signal Period: %d ns\n", (uint)(period*1000000000));
+			}
+			else if(period < 0.001){
+				trace_printf("Signal Period: %d us\n", (uint)(period*1000000));
+			}
+			else{
+				trace_printf("Signal Period: %d ms\n", (uint)(period*1000));
+			}
 		}
 
 		/* Clear EXTI1 interrupt pending flag */
